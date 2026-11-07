@@ -1,0 +1,2 @@
+# プロジェクトにコピーするフックは sh で実行するため、改行を LF に固定する。
+/templete/.githooks/** text eol=lf
