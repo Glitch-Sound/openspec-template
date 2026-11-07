@@ -162,8 +162,26 @@ AI は AGENT.md に従い、change を作るか直接変更するかを判断す
 
 ### OpenSpec の部分を切り離して納品する場合
 
-> [!NOTE]
-> 後で更新する。
+OpenSpec の部分を含めずに納品したい場合は、`.gitattributes` の `export-ignore` で、OpenSpec を使った開発のためのファイルを納品物から除く。\
+OpenSpec の部分も含めて納品する場合は、この手順は不要である。\
+除くのは、`openspec/`、`AGENTS.md`、`CLAUDE.md`、AI ツールのスキル、`.githooks/`、検査スクリプト、`package.json` などである。\
+コミットした状態から、次のコマンドで納品物を作る。
+
+```sh
+git archive HEAD -o <納品物の名前>.zip
+```
+
+作った後に、納品物の側で次を直す。
+
+- README.md の「開発」の節を削除する。
+- テストに書いたシナリオIDは、動作に影響しないので残してよい。\
+  渡さない仕様書の番号が気になる場合は、納品物の側で消す。
+- `.gitattributes` と `.gitignore` に OpenSpec のための行が残るが、動作に影響しないので残してよい。
+
+TypeScript など、プロダクトでも `package.json` を使う場合は、`package.json` と `package-lock.json` を除かない。\
+`.gitattributes` からこの2行を消しておき、納品物の側で `devDependencies` の OpenSpec と `check` を消して、`npm install` で `package-lock.json` を作り直す。
+
+最後に、納品物を展開し、README.md のセットアップ手順でプロダクトの検査が成功することを確かめる。
 
 ## 内容
 
