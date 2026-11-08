@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // OpenSpec のIDと対応関係を検査し、台帳を生成する。
-// 仕様: テンプレート docs/openspec-trace-spec.md
-import fs from 'node:fs'
-import path from 'node:path'
+// 仕様: テンプレートの docs/openspec-trace-spec.md
+import fs from 'node:fs';
+import path from 'node:path';
 
 const ROOT = process.cwd();
 const OS = path.join(ROOT, 'openspec');
@@ -13,7 +13,7 @@ const RE = {
   scn: /^#### Scenario: ((N?REQ-\d{3})-S\d{2}) - .+$/,
   scnLoose: /^#### Scenario:/,
   decision: /^### (D-\d{2}) - .+$/,
-  idInText: /(?<![A-Z0-9-]>)(N?REQ-\d{3}-S\d{2})(?![0-9])/g,
+  idInText: /(?<![A-Z0-9-])(N?REQ-\d{3}-S\d{2})(?![0-9])/g,
   reqId: /N?REQ-\d{3}/,
 };
 
@@ -82,21 +82,23 @@ function loadSpecsDir(base) {
   return caps;
 }
 
-function section(text, name) {
+function section(text, heading) {
   if (!text) return '';
   const lines = text.split('\n');
-  const start = lines.findIndex((line) => line.trim() === `## ${name}`);
+  const start = lines.findIndex((l) => l.trim() === `## ${heading}`);
   if (start < 0) return '';
-  const end = lines.findIndex((line, i) => i > start && /^## /.test(line));
-  return lines.slice(start + 1, end < 0 ? undefined : end).join('\n');
+  const rest = lines.slice(start + 1);
+  const end = rest.findIndex((l) => /^##/.test(l));
+  return (end < 0 ? rest : rest.slice(0, end)).join('\n');
 }
 
 function tableRows(text) {
   return (text || '').split('\n')
-    .filter((line) => /^\s*\|/.test(line))
-    .map((line) => line.split('|').slice(1, -1).map((cell) => cell.trim()))
-    .filter((cells) => cells.length && !cells.every((cell) => /^:?-+:?$/.test(cell)))
-    .slice(1);
+    .slpit('\n')
+    .filter((l) => l.trim().startsWith('|'))
+    .map((l) => l.trim().replace(/^\|/, '').split('|').map((c) => c.trim()))
+    .filter((cells) => !cells.every((c) => /^-+:?$/.test(c)))
+    .slice(1); // 見出し行は除く
 }
 
 function loadChange(dir) {
@@ -115,7 +117,7 @@ function loadChange(dir) {
       }
       if (/^#{1,3} /.test(line)) cur = null;
       const p = line.match(/^- 昇格:\s*(.+)$/);
-      if (cur && p) decisions[cur].promotion = p[1].trim().replace(/。$/, '').replace(/\.$/, '').trim();
+      if (cur && p) decisions[cur].promotion = p[1].trim().replace(/\\$/, '').replace(/。$/, '').trim();
     }
   }
   const plan = tableRows(section(design, '検証計画')).map(([id, decision, method]) => ({ id, decision, method }));
@@ -141,7 +143,7 @@ function loadReadmeCaps() {
   const text = read(path.join(OS, 'specs', 'README.md'));
   if (text === null) return null;
   return tableRows(section(text, '一覧'))
-    .map((c) => c[0].replace(/^\[([^\]]+)\]\(.*$/, '$1').replace(/`/g, '').trim())
+    .map((c) => c[0].replace(/^\[([^\]]+)\].*$/, '$1').replace(/`/g, '').trim())
     .filter(Boolean);
 }
 
@@ -185,7 +187,7 @@ function loadTests() {
   const files = listFiles(ROOT).filter((f) =>
     globs ? globs.some((g) => globToRegex(g).test(f)) : DEFAULT_TEST.test(path.basename(f)),
   );
-  const refs = new Map(); // シナリオID → ファイルの一覧
+  const refs = new Map(); // シナリオID -> ファイルの一覧
   for (const f of files) {
     for (const m of fs.readFileSync(path.join(ROOT, f), 'utf8').matchAll(RE.idInText)) {
       if (!refs.has(m[1])) refs.set(m[1], new Set());
@@ -314,7 +316,7 @@ function checkStrict(d, name) {
     else if (!['自動テスト', '実機確認'].includes(p.method)) errors.push(`${s} の検証方法 "${p.method}" が "自動テスト" でも "実機確認" でもない`);
   }
   for (const p of change.plan)
-    for (const dec of (p.decision || '').split(/[,、\s]+/).filter(Boolean))
+    for (const dec of (p.decision || '').split(/[、,\s]+/).filter(Boolean))
       if (dec !== 'なし' && !change.decisions[dec]) errors.push(`検証計画の ${dec} が、設計判断の見出しにない`);
 
   const afterMain = applyChange(d.main, change);
@@ -340,17 +342,16 @@ function checkStrict(d, name) {
 
 function generate(d) {
   const manual = new Map(d.manual.map((m) => [m.id, m.status]));
-  const out = ['# トレーサビリティ', '', '`openspec-trace.mjs generate` が生成する。', '編集せずコミットしない。', ''];
+  const out = ['# トレーサビリティ', '', '`openspec-trace.mjs generate` が生成する。\\', '編集せず、コミットしない。', ''];
   out.push('## 要件一覧', '', '| 要件ID | 名称 | capability | シナリオ数 | 自動テストあり | 実機確認 |', '| --- | --- | --- | --- | --- | --- |');
   const scnRows = [];
-  for (const [cap, spec] of Object.entries(d.main)) {
+  for (const [cap, spec] of Object.entries(d.main))
     for (const r of spec.requirements) {
       const tested = r.scenarios.filter((s) => d.tests.has(s)).length;
       const manualStates = r.scenarios.filter((s) => manual.has(s)).map((s) => `${s}: ${manual.get(s)}`);
-      out.push(`| ${r.id} | ${r.name} | ${cap} | ${r.scenarios.length} | ${tested} | ${manualStates.join(', ') || '-'} |`);
-      for (const s of r.scenarios) scnRows.push(`| ${s} | ${[...(d.tests.get(s) || [])].join(', ') || '-'} | ${manual.get(s) || '-'} |`);
+      out.push(`| ${r.id} | ${r.name} | ${cap} | ${r.scenarios.length} | ${tested} | ${manualStates.join('、') || '-'} |`);
+      for (const s of r.scenarios) scnRows.push(`| ${s} | ${[...(d.tests.get(s) || [])].join('、') || '-'} | ${manual.get(s) || '-'} |`);
     }
-  }
   out.push('', '## シナリオ一覧', '', '| シナリオID | テストファイル | 実機確認 |', '| --- | --- | --- |', ...scnRows);
   out.push('', '## 変更履歴', '', '| 日付 | 変更名 | 操作 | 要件ID |', '| --- | --- | --- | --- |');
   const opName = { ADDED: '追加', MODIFIED: '変更', REMOVED: '廃止', RENAMED: '名称変更' };

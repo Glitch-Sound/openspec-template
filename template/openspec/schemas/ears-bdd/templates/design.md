@@ -12,7 +12,7 @@
 - 選択: {{選択}}
 - 理由: {{理由}}
 - 代替案: {{代替案}}
-- 昇格: {{openspec/tech.md の 節の名前 / openspec/structure.md の　節の名前 / なし}}
+- 昇格: {{openspec/tech.md の 節の名前 / openspec/structure.md の 節の名前 / なし}}
 
 ## 検証計画
 
