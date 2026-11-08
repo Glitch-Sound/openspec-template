@@ -19,8 +19,8 @@
 
 ## 開発
 
-この節は、OpenSpec を使った開発のためにものである。\
-OpenSpec の部分を切り離して納品する場合は、納品物からこの説を削除する。
+この節は、OpenSpec を使った開発のためのものである。\
+OpenSpec の部分を切り離して納品する場合は、納品物からこの節を削除する。
 
 ### 開発に必要なもの
 
@@ -34,7 +34,7 @@ OpenSpec が生成するワークフローは、マシンごとのグローバ�
 
 ```sh
 npx --no-install openspec config set profile custom
-npx --no-install openspec config set workflows '["explore", "ff", "apply", "update", "verify", "sync", "archive"]'
+npx --no-install openspec config set workflows '["explore","ff","apply","update","verify","sync","archive"]'
 npx --no-install openspec config set delivery skills
 ```
 
@@ -51,10 +51,10 @@ Windows PowerShell 5.1 では、2行目が `expected array, received string` で
 5. `npm run check` で、全体検証が成功することを確かめる。
 
 全体検証は、プロダクトの検査と OpenSpec の検査をまとめて実行し、コミットの前にフックで自動で実行される。\
-AI ツール向けの生成されたファイル(`.github/skills/`、`.claude/skills/`、`.agents/skills/`のうち、使うツールのもの)はコミットし、手で編集しない。\
+AI ツール向けの生成されたファイル(`.github/skills/`、`.claude/skills/`、`.agents/skills/` のうち、使うツールのもの)はコミットし、手で編集しない。\
 OpenSpec を更新した後は、`npx --no-install openspec update` で生成し直す。
 
-### 参照する文章
+### 参照する文書
 
 - プロダクトの目的と範囲: [product.md](openspec/product.md)
 - 開発の進め方: [AGENTS.md](AGENTS.md)
