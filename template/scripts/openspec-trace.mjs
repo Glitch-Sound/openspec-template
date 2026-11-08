@@ -96,7 +96,7 @@ function tableRows(text) {
   return text
     .split('\n')
     .filter((l) => l.trim().startsWith('|'))
-    .map((l) => l.trim().replace(/^\||\$/g, '').split('|').map((c) => c.trim()))
+    .map((l) => l.trim().replace(/^\||\|$/g, '').split('|').map((c) => c.trim()))
     .filter((cells) => !cells.every((c) => /^:?-+:?$/.test(c)))
     .slice(1); // 見出し行を除く
 }
