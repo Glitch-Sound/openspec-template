@@ -88,17 +88,17 @@ function section(text, heading) {
   const start = lines.findIndex((l) => l.trim() === `## ${heading}`);
   if (start < 0) return '';
   const rest = lines.slice(start + 1);
-  const end = rest.findIndex((l) => /^##/.test(l));
+  const end = rest.findIndex((l) => /^## /.test(l));
   return (end < 0 ? rest : rest.slice(0, end)).join('\n');
 }
 
 function tableRows(text) {
-  return (text || '').split('\n')
-    .slpit('\n')
+  return text
+    .split('\n')
     .filter((l) => l.trim().startsWith('|'))
-    .map((l) => l.trim().replace(/^\|/, '').split('|').map((c) => c.trim()))
-    .filter((cells) => !cells.every((c) => /^-+:?$/.test(c)))
-    .slice(1); // 見出し行は除く
+    .map((l) => l.trim().replace(/^\||\$/g, '').split('|').map((c) => c.trim()))
+    .filter((cells) => !cells.every((c) => /^:?-+:?$/.test(c)))
+    .slice(1); // 見出し行を除く
 }
 
 function loadChange(dir) {
