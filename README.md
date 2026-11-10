@@ -29,7 +29,7 @@ OpenSpec の版は、[版と更新履歴](#版と更新履歴)の "確認した 
 ### 1. ファイルと道具を用意する
 
 1. プロジェクト用のディレクトリを作り、`template/` の中身をルートにコピーする。\
-   `.openspec-template`、`.gitignore`、`.gitattributes`、`.githooks/`、`.vscode/` などの隠しファイルを含める。
+   `.openspec-template`、`.gitignore`、`.gitattributes`、`.githooks/`、`.vscode/` などの隠しファイルも含める。
 2. 次のコマンドを実行する。
 
    ```sh
@@ -203,7 +203,7 @@ TypeScript など、プロダクトでも `package.json` を使う場合は、`p
 | `openspec/schemas/ears-bdd/` | 共通 | 共通 schema とテンプレート |
 | `scripts/openspec-trace.mjs` | 共通 | トレース検査、ID 採番、台帳生成のスクリプト |
 | `openspec/config.yaml` | 一部共通 | rules 以外は共通、rules はプロジェクト固有 |
-| `.vscode/settings.json` | 雛形 | Copilot に AGENTS.md を読込ませる設定 |
+| `.vscode/settings.json` | 雛形 | Copilot に AGENTS.md を読ませる設定 |
 | `openspec/product.md` | 雛形 | プロダクトの前提 |
 | `openspec/tech.md` | 雛形 | 技術の前提 |
 | `openspec/structure.md` | 雛形 | 構成の前提 |
