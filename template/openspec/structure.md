@@ -20,7 +20,8 @@
 ├── scripts/            # 検査スクリプト(テンプレートの共通部分)
 ├── AGENTS.md           # 開発エージェント向けの指示
 ├── CLAUUDE.md          # Claude Code に AGENTS.md を読み込ませる
-├── README.md           # プロジェクトの説明とセットアップ
+├── DEVELOPMENT.md      # 開発者向けの手順(OpenSpec を使った開発)
+├── README.md           # 利用者向けの説明(概要、セットアップ、使い方)
 └── package.json        # OpenSpec の版と全体検証の定義
 ```
 

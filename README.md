@@ -45,7 +45,7 @@ OpenSpec の版は、[版と更新履歴](#版と更新履歴)の "確認した 
 
 ### 2. OpenSpec を初期化する
 
-1. コピーした `README.md` の "OpenSpec のグローバル設定" にある3つのコマンドを実行する。\
+1. コピーした `DEVELOPMENT.md` の "OpenSpec のグローバル設定" にある3つのコマンドを実行する。\
    マシンごとに最初の1回だけ必要で、必ず次の `openspec init` より前に行う。\
    行わないと、ff と verify のスキルが生成されない。
 2. AI ツール向けのスキルを生成する。
@@ -113,10 +113,11 @@ product.md は、AI が判断するときの基準になるので、開発を始
 
 ### 既存のリポジトリに導入する場合
 
-手順は同じで、次の6つのファイルだけ扱いを変える。\
+手順は同じで、次の7つのファイルだけ扱いを変える。\
 同じ名前の既存のファイルを上書きしてしまうため、コピーせず、既存のファイルに中身を手で統合する。
 
 - `README.md`
+- `DEVELOPMENT.md`
 - `AGENTS.md`
 - `CLAUDE.md`
 - `.vscode/settings.json`
@@ -164,7 +165,7 @@ AI は AGENTS.md に従い、change を作るか直接変更するかを判断�
 
 OpenSpec の部分を含めずに納品したい場合は、`.gitattributes` の `export-ignore` で、OpenSpec を使った開発のためのファイルを納品物から除く。\
 OpenSpec の部分も含めて納品する場合は、この手順は不要である。\
-除くのは、`openspec/`、`AGENTS.md`、`CLAUDE.md`、AI ツールのスキル、`.githooks/`、検査スクリプト、`package.json` などである。\
+除くのは、`openspec/`、`AGENTS.md`、`CLAUDE.md`、`DEVELOPMENT.md`、AI ツールのスキル、`.githooks/`、検査スクリプト、`package.json` などである。\
 コミットした状態から、次のコマンドで納品物を作る。
 
 ```sh
@@ -173,7 +174,6 @@ git archive HEAD -o <納品物の名前>.zip
 
 作った後に、納品物の側で次を直す。
 
-- README.md の "開発" の節を削除する。
 - テストに書いたシナリオIDは、動作に影響しないので残してよい。\
   渡さない仕様書の番号が気になる場合は、納品物の側で消す。
 - `.gitattributes` と `.gitignore` に OpenSpec のための行が残るが、動作に影響しないので残してよい。

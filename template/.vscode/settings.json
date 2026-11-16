@@ -1,3 +1,8 @@
 {
-  "chat.useAgentsMdFile": true
+  "chat.useAgentsMdFile": true,
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "AGENTS.md の\"コミット\"の節に従う。1行目は `<種類>: <要約>` とし、種類は feat(振る舞いの追加と変更)、fix(バグの修正)、docs(文章だけの変更)、refactor(振る舞いを変えないコードの変更)、test(テストだけの変更)、chore(開発基盤、ツール、依存の更新、テンプレートの取り込み)のいずれかにする。要約は日本語の常体で書き、句点はつけない。理由を残す場合は1行空けて本文に書き、change を archive したコミットには本文に change の名前を書く。"
+    }
+  ]
 }

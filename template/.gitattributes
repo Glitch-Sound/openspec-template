@@ -13,6 +13,7 @@
 /openspec export-ignore
 /scripts/openspec-trace.mjs export-ignore
 /AGENTS.md export-ignore
+/DEVELOPMENT.md export-ignore
 /CLAUDE.md export-ignore
 /.openspec-template export-ignore
 /package.json export-ignore
